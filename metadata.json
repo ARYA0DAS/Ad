@@ -1,0 +1,6 @@
+{
+  "name": "HM GRUP",
+  "description": "Invoice, billing, and customer quotation app for HM GRUP, developed by Mc Company.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

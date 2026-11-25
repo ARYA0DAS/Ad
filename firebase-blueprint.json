@@ -1,0 +1,283 @@
+{
+  "entities": {
+    "CompanyProfile": {
+      "title": "CompanyProfile",
+      "description": "Business profile, letterhead settings, and numbering counters for HM GRUP (developed by Mc Company).",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID matching the document ID."
+        },
+        "companyName": {
+          "type": "string",
+          "description": "Business name printed on bills and quotations (defaults to HM GRUP)."
+        },
+        "developerCredit": {
+          "type": "string",
+          "description": "Mandatory development attribution (All Development by Mc Company)."
+        },
+        "tagline": {
+          "type": "string",
+          "description": "Optional business subtitle or tagline."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional business phone number."
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional business contact email."
+        },
+        "address": {
+          "type": "string",
+          "description": "Optional business office address."
+        },
+        "taxNumber": {
+          "type": "string",
+          "description": "Optional GST/VAT/Tax registration ID."
+        },
+        "currencySymbol": {
+          "type": "string",
+          "description": "Currency symbol used across invoices and quotations."
+        },
+        "defaultTaxRate": {
+          "type": "number",
+          "description": "Default tax percentage (0 to 100)."
+        },
+        "defaultTerms": {
+          "type": "string",
+          "description": "Default payment terms and footer notes."
+        },
+        "signatoryName": {
+          "type": "string",
+          "description": "Optional authorized signatory printed on documents."
+        },
+        "nextBillNumber": {
+          "type": "integer",
+          "description": "Next sequential bill counter."
+        },
+        "nextQuotationNumber": {
+          "type": "integer",
+          "description": "Next sequential quotation counter."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp (clients must write FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp (clients must write FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "companyName",
+        "developerCredit",
+        "currencySymbol",
+        "defaultTaxRate",
+        "nextBillNumber",
+        "nextQuotationNumber",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Saved client/customer record for quick billing and quotation creation.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase UID."
+        },
+        "name": {
+          "type": "string",
+          "description": "Customer or company name."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Optional customer phone number."
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional customer email address."
+        },
+        "address": {
+          "type": "string",
+          "description": "Optional customer billing address."
+        },
+        "taxNumber": {
+          "type": "string",
+          "description": "Optional customer GST/Tax ID."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional customer notes."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp (clients must write FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp (clients must write FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "name",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "BillingDocument": {
+      "title": "BillingDocument",
+      "description": "A customer Bill (Invoice) or Quotation issued by HM GRUP with bounded line items and totals.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase UID."
+        },
+        "docType": {
+          "type": "string",
+          "enum": ["BILL", "QUOTATION"],
+          "description": "Document category: BILL or QUOTATION."
+        },
+        "docNumber": {
+          "type": "string",
+          "description": "Formatted document number (e.g. HMG-INV-2026-001)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["DRAFT", "SENT", "APPROVED", "CONVERTED", "UNPAID", "PARTIAL", "PAID"],
+          "description": "Lifecycle status of the bill or quotation."
+        },
+        "customerId": {
+          "type": "string",
+          "description": "Optional linked customer document ID."
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Recipient customer name."
+        },
+        "customerPhone": {
+          "type": "string",
+          "description": "Optional customer phone."
+        },
+        "customerEmail": {
+          "type": "string",
+          "description": "Optional customer email."
+        },
+        "customerAddress": {
+          "type": "string",
+          "description": "Optional customer address."
+        },
+        "customerTaxNumber": {
+          "type": "string",
+          "description": "Optional customer tax ID."
+        },
+        "issueDate": {
+          "type": "string",
+          "description": "Issue date string (YYYY-MM-DD)."
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "Optional due date or validity date string."
+        },
+        "currencySymbol": {
+          "type": "string",
+          "description": "Currency symbol snapshot for the document."
+        },
+        "items": {
+          "type": "array",
+          "description": "Bounded list (1 to 50) of itemized line-item maps containing description, quantity, unit, unitPrice, and lineTotal."
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "Sum of all line item totals before discount and tax."
+        },
+        "discountPercent": {
+          "type": "number",
+          "description": "Discount percentage (0 to 100)."
+        },
+        "discountAmount": {
+          "type": "number",
+          "description": "Calculated discount amount."
+        },
+        "taxRate": {
+          "type": "number",
+          "description": "Tax/GST rate percentage (0 to 100)."
+        },
+        "taxAmount": {
+          "type": "number",
+          "description": "Calculated tax amount."
+        },
+        "grandTotal": {
+          "type": "number",
+          "description": "Final payable or quoted grand total."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional notes or payment terms."
+        },
+        "developerCredit": {
+          "type": "string",
+          "description": "Attribution text stamped on the document (All Development by Mc Company)."
+        },
+        "convertedToBillId": {
+          "type": "string",
+          "description": "Optional ID of the bill generated from this quotation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp (clients must write FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp (clients must write FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "docType",
+        "docNumber",
+        "status",
+        "customerName",
+        "issueDate",
+        "currencySymbol",
+        "items",
+        "subtotal",
+        "discountPercent",
+        "discountAmount",
+        "taxRate",
+        "taxAmount",
+        "grandTotal",
+        "developerCredit",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/CompanyProfile" },
+      "description": "Per-user HM GRUP company profile, letterhead info, and document sequence counters."
+    },
+    "/users/{userId}/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/Customer" },
+      "description": "Per-user saved customer directory."
+    },
+    "/users/{userId}/documents/{documentId}": {
+      "schema": { "$ref": "#/entities/BillingDocument" },
+      "description": "Per-user bills (invoices) and quotations."
+    }
+  }
+}
